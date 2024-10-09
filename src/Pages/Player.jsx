@@ -25,15 +25,22 @@ const Player = () => {
 
     fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`, options)
     .then(response => response.json())
-    .then(response => setApiData(response.results[0]))
-    .catch(err => console.error(err));
-  },[])
+    .then(response => {
+      if(response.results && response.results.length > 0) {
+          setApiData(response.results[0]);
+      } else {
+         
+          console.error("No video found for this movie");
+      }
+   })
+   .catch(err => console.error(err));;
+  },[id])
 
 
   return (
     <div className='player'>
       <FaArrowLeft className='icon' onClick={()=>{navigate('/')}}/>
-      <iframe style={{width:"90%", height:"90%"}} src={`https://www.youtube.com/embed/${apiData.key}`} title='trailer' frameBorder='0' allowFullScreen></iframe>
+      <iframe style={{width:"90%", height:"90%"}}  src={apiData.key ? `https://www.youtube.com/embed/${apiData.key}` : ''} title='trailer' frameBorder='0' allowFullScreen></iframe>
       <div className="player-info">
         <p>{apiData.published_at.slice(0,10)}</p>
         <p>{apiData.name}</p>

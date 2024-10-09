@@ -26,7 +26,7 @@ const Cards = ({title, category}) => {
       .then(response => setApiData(response.results))
       .catch(err => console.error(err));
 
-  cardRef.current.addEventListener('wheel', handleWheel)
+      cardRef.current.addEventListener('wheel', handleWheel, { passive: true });
   },[])
 
   return (
